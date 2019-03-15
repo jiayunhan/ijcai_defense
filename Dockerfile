@@ -1,9 +1,9 @@
 # Dockerfile of Example
 # Version 1.0
 # Base Images
-# FROM registry.cn-shanghai.aliyuncs.com/aliseccompetition/tensorflow:1.1.0-devel-gpu
+FROM registry.cn-shanghai.aliyuncs.com/aliseccompetition/tensorflow:1.1.0-devel-gpu
 #MAINTAINER
-FROM nvcr.io/nvidia/tensorflow:18.12-py3
+#FROM nvcr.io/nvidia/tensorflow:18.12-py3
 #MAINTAINER AlibabaSec
 
 ADD . /competition
