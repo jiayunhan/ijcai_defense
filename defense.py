@@ -5,7 +5,7 @@ This defense loads inception v1 checkpoint and classifies all images using loade
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-
+import pdb
 import os
 import numpy as np
 from scipy.misc import imread
@@ -36,7 +36,7 @@ def load_images(input_dir, batch_shape):
     idx = 0
     batch_size = batch_shape[0]
     for filepath in tf.gfile.Glob(os.path.join(input_dir, '*.png')):
-        with open(filepath) as f:
+        with open(filepath, 'rb') as f:
             raw_image = imread(f, mode='RGB')
             image = imresize(raw_image, [FLAGS.image_height, FLAGS.image_width]).astype(np.float)
             image = (image / 255.0) * 2.0 - 1.0
