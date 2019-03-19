@@ -3,7 +3,6 @@ import os
 from PIL import Image
 import torch
 from utils.models import resnet101_ori, resnet50_ori, NASlarge_ori
-import pdb
 
 def load_images(input_dir, batch_shape):
     images = np.zeros(batch_shape)
