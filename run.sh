@@ -11,7 +11,7 @@
 INPUT_DIR=$1
 OUTPUT_FILE=$2
 
-python defense.py \
+python defense_torch.py \
   --input_dir="${INPUT_DIR}" \
   --output_file="${OUTPUT_FILE}" \
-  --checkpoint_path=./models/inception_v1/inception_v1.ckpt
+  --checkpoint_path=./models/weights.pth.tar

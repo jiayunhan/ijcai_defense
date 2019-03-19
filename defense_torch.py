@@ -1,7 +1,5 @@
 import numpy as np
 import os
-from scipy.misc import imread
-from scipy.misc import imresize
 from PIL import Image
 import torch
 from models.models import resnet101_ori, resnet50_ori, NASlarge_ori
@@ -56,7 +54,7 @@ def main():
 
     net = resnet101_ori(n_channels=3, num_classes=110, fe_branch=True, isPretrain=False)
     net = torch.nn.DataParallel(net).cuda()
-    pre_weight_path = "/home/yantao/workspace/projects/baidu/IJCAI_19_challenge/history/contrast_resnet101/Mon Mar 18 18:53:03 2019/contrast_fe_9.pth.tar"
+    pre_weight_path = args.checkpoint_path
     if pre_weight_path is not None:
         if os.path.isfile(pre_weight_path):
             checkpoint = torch.load(pre_weight_path)
