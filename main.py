@@ -2,7 +2,7 @@ import numpy as np
 import os
 from PIL import Image
 import torch
-from models.models import resnet101_ori, resnet50_ori, NASlarge_ori
+from utils.models import resnet101_ori, resnet50_ori, NASlarge_ori
 import pdb
 
 def load_images(input_dir, batch_shape):
