@@ -1,10 +1,10 @@
 # Dockerfile of Example
 # Version 1.0
 # Base Images
-FROM registry.us-west-1.aliyuncs.com/bdu-xlab/base:bdu
+FROM registry.us-west-1.aliyuncs.com/bdu-xlab/torch_base:latest
 #MAINTAINER
 #FROM nvcr.io/nvidia/tensorflow:18.12-py3
-# MAINTAINER AlibabaSec
+MAINTAINER jiayunhan008
 
 ADD . /competition
 
