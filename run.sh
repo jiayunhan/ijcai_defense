@@ -11,7 +11,7 @@
 INPUT_DIR=$1
 OUTPUT_FILE=$2
 
-python defense_torch.py \
+python main.py \
   --input_dir="${INPUT_DIR}" \
   --output_file="${OUTPUT_FILE}" \
   --checkpoint_path=./models/weights.pth.tar

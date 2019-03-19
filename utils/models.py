@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from scipy.signal import gaussian
 
 from utils.ResNet import resnet18, resnet50, resnet101
 from utils.NASnet import nasnetalarge
