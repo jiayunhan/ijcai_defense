@@ -89,7 +89,6 @@ def main():
         else:
             raise ValueError('Weight path does not exist.')
             
-    asdasd = 0
     with open(args.output_file, 'w') as out_file:
         for filenames, images in load_resize_images(args.input_dir, batch_shape):
             images_c_first = np.transpose(images, (0, 3, 1, 2))
