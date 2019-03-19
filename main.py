@@ -3,6 +3,8 @@ import os
 from PIL import Image
 import torch
 from utils.models import resnet101_ori, resnet50_ori, NASlarge_ori
+from utils.rngs import nprng
+import pdb
 
 def load_images(input_dir, batch_shape):
     images = np.zeros(batch_shape)
@@ -22,13 +24,39 @@ def load_images(input_dir, batch_shape):
         filenames.append(os.path.basename(filepath))
         idx += 1
         if idx == batch_size:
-            yield filenames, images
+            yield filenames, images.astype(np.float32)
             filenames = []
             images = np.zeros(batch_shape)
             idx = 0
     if idx > 0:
-        yield filenames, images
+        yield filenames, images.astype(np.float32)
 
+
+def load_resize_images(input_dir, batch_shape):
+    images = np.zeros(batch_shape)
+    filenames = []
+    idx = 0
+    batch_size = batch_shape[0]
+    image_height = batch_shape[1]
+    image_width = batch_shape[2]
+    for filename in os.listdir(input_dir):
+        if(filename.endswith(".png")):
+            filepath = os.path.join(input_dir, filename)
+            with Image.open(filepath) as img:
+                img = img.resize((image_height // 2, image_width // 2), resample=3)
+                img = img.resize((image_height, image_width), resample=3)
+                image = np.asarray(img, dtype=np.float) / 255.
+                # image = (image / 255.0) * 2.0 - 1.0
+        images[idx, :, :, :] = image
+        filenames.append(os.path.basename(filepath))
+        idx += 1
+        if idx == batch_size:
+            yield filenames, images.astype(np.float32)
+            filenames = []
+            images = np.zeros(batch_shape)
+            idx = 0
+    if idx > 0:
+        yield filenames, images.astype(np.float32)
 
 def save_images(images, filenames, output_dir):
     for i, filename in enumerate(filenames):
@@ -61,10 +89,22 @@ def main():
         else:
             raise ValueError('Weight path does not exist.')
             
+    asdasd = 0
     with open(args.output_file, 'w') as out_file:
-        for filenames, images in load_images(args.input_dir, batch_shape):
+        for filenames, images in load_resize_images(args.input_dir, batch_shape):
             images_c_first = np.transpose(images, (0, 3, 1, 2))
-            images_var = torch.from_numpy(images_c_first).float().cuda()
+            images_var = torch.from_numpy(images_c_first).float()
+            
+            epsilon = 0.05
+            noise = nprng.uniform(-epsilon, epsilon, size=images_var.shape)
+            noise_t = torch.from_numpy(noise)
+            noise_t = noise_t.type(images_var.dtype)
+
+            images_var = images_var + epsilon * noise_t
+            images_var = torch.clamp(images_var, min=0, max=1)
+    
+            images_var.cuda()
+
             output, _ = net(images_var)
             labels = np.argmax(output.data.cpu().numpy(), axis=1)
             for filename, label in zip(filenames, labels):
