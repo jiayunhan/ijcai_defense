@@ -2,7 +2,7 @@ import numpy as np
 import os
 from PIL import Image
 import torch
-from utils.models import resnet101_ori, resnet50_ori, NASlarge_ori
+from utils.models import resnet101_ori, resnet50_ori, NASlarge_ori, resnet152_ori
 from utils.rngs import nprng
 import pdb
 
