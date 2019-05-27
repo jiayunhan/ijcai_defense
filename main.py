@@ -73,13 +73,13 @@ def main():
     parser.add_argument('--input_dir')
     parser.add_argument('--output_file')
     parser.add_argument('--checkpoint_path')
-    parser.add_argument('--batch_size', default=16)
+    parser.add_argument('--batch_size', default=16) 
     parser.add_argument('--image_height', default=224)
     parser.add_argument('--image_width', default=224)
     args = parser.parse_args()
     batch_shape = [args.batch_size, args.image_height, args.image_width, 3]
 
-    net = resnet101_ori(n_channels=3, num_classes=110, fe_branch=True, isPretrain=False)
+    net = resnet152_ori(n_channels=3, num_classes=110, fe_branch=True, isPretrain=False)
     net = torch.nn.DataParallel(net).cuda()
     net.eval()
     pre_weight_path = args.checkpoint_path
@@ -95,13 +95,12 @@ def main():
             images_c_first = np.transpose(images, (0, 3, 1, 2))
             images_var = torch.from_numpy(images_c_first).float()
             
-            epsilon = 0.05
-            noise = nprng.uniform(-epsilon, epsilon, size=images_var.shape)
-            noise_t = torch.from_numpy(noise)
-            noise_t = noise_t.type(images_var.dtype)
-            
-            images_var = images_var + epsilon * noise_t
-            images_var = torch.clamp(images_var, min=0, max=1)
+            #epsilon = 0.05
+            #noise = nprng.uniform(-epsilon, epsilon, size=images_var.shape)
+            #noise_t = torch.from_numpy(noise)
+            #noise_t = noise_t.type(images_var.dtype)
+            #images_var = images_var + epsilon * noise_t
+            #images_var = torch.clamp(images_var, min=0, max=1)
     
             images_var.cuda()
 
